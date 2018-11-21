@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fun with Giphy!</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Creature Search</h1>
+
+        <!-- This form will be where users input data about the movies -->
+        <form id="creature-form">
+            <label for="creature-input">Search for a creature</label>
+            <input type="text" id="creature-input"><br>
+
+            <!-- This button will trigger our AJAX call -->
+            <input id="find-creature" type="submit" value="Creature Search">
+        </form>
+
+        <!-- We'll be dumping our JSON contents in here -->
+        <div id="creature-view"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            $("#find-creature").on("click", function (event) {
+
+                // event.preventDefault() can be used to prevent an event's default behavior.
+                // Here, it prevents the submit button from trying to submit a form when clicked
+                event.preventDefault();
+
+
+                 var creatures = [];
+                // Here we grab the text from the input box
+                var creature = $("#creature-input").val();
+
+                // Here we construct our URL
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + creature + "&api_key=2ZivORTg0jk557LDJuD8WsbOxUCHEUCZ&limit=10";
+
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                }).then(function (response) {
+                    console.log(response);
+                });
+
+
+                // Initial array of movies
+                // var creatures = [];
+
+                // Function for displaying movie data
+                function renderButtons() {
+
+                    // Deleting the movie buttons prior to adding new movie buttons
+                    // (this is necessary otherwise we will have repeat buttons)
+                    $("#creature-view").empty();
+
+                    // Looping through the array of movies
+                    for (var i = 0; i < creatures.length; i++) {
+
+                        // Then dynamicaly generating buttons for each movie in the array.
+                        // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
+                        var a = $("<button>");
+                        // Adding a class
+                        a.addClass("creature");
+                        // Adding a data-attribute with a value of the movie at index i
+                        a.attr("data-name", creatures[i]);
+                        // Providing the button's text with a value of the movie at index i
+                        a.text(creatures[i]);
+                        // Adding the button to the HTML
+                        $("#creatures-view").append(a);
+                    }
+                }
+
+                // This function handles events where one button is clicked
+                $("#add-creature").on("click", function (event) {
+                    // event.preventDefault() prevents the form from trying to submit itself.
+                    // We're using a form so that the user can hit enter instead of clicking the button if they want
+                    event.preventDefault();
+
+                    // This line will grab the text from the input box
+                    var creature = $("#creature-input").val().trim();
+                    // The movie from the textbox is then added to our array
+                    creatures.push(creature);
+
+                    // calling renderButtons which handles the processing of our movie array
+                    renderButtons();
+                });
+
+                // Calling the renderButtons function at least once to display the initial list of movies
+                renderButtons();
+
+
+            });
+
+        </script>
+
+</body>
+
+</html>
