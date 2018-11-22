@@ -31,7 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       // Initial array of animals
-      var animals = ["cat", "dog", "bunny", "hamster", "lion", "tiger", "bear", "horse", "panda", "bird", "elephant", "dolphin", "fish", "turtle", "frog", "snake","cow", "goat", "pig"];
+      var animals = ["cat", "dog", "bunny", "hamster", "lion", "tiger", "bear", "horse", "panda", "bird", "elephant", "dolphin", "fish", "turtle", "frog", "snake", "cow", "goat", "pig"];
 
       // displayAnimalInfo function re-renders the HTML to display the appropriate content
       function displayAnimalInfo() {
@@ -43,31 +43,34 @@
         $.ajax({
           url: queryURL,
           method: "GET"
-        }).then(function(response) {
-                console.log(response);
+        }).then(function (response) {
+          console.log(response);
+
+
           // Creating a div to hold the animal
           var animalDiv = $("<div class='animal'>");
+          var results = response.data;
+          // Creating a loop to execute the amount of items in the array
+          for (var i = 0; i < results.length; i++) {
+            // Storing the rating data
+            var rating = results[i].rating;
 
-          // Storing the rating data
-          var rating = response.data[0].rating;
+            // Creating an element to have the rating displayed
+            var pOne = $("<p>").text("Rating: " + rating);
 
-          // Creating an element to have the rating displayed
-          var pOne = $("<p>").text("Rating: " + rating);
+            // Retrieving the URL for the image
+            var imgURL = results[i].images.downsized_still.url;
 
-          // Displaying the rating
-          animalDiv.append(pOne);
+            // Creating an element to hold the image
+            var image = $("<img>").attr("src", imgURL);
 
-          // Retrieving the URL for the image
-          var imgURL = response.data[length].images.downsized_large.url;
+            // Appending the rating and image
+            animalDiv.append(pOne);
+            animalDiv.append(image);
 
-          // Creating an element to hold the image
-          var image = $("<img>").attr("src", imgURL);
-
-          // Appending the image
-          animalDiv.append(image);
-
-          // Putting the entire animal above the previous animals
-          $("#animals-view").prepend(animalDiv);
+            // Putting the entire animal above the previous animals
+            $("#animal-view").prepend(animalDiv);
+          }
         });
 
       }
@@ -97,7 +100,7 @@
       }
 
       // This function handles events where a animal button is clicked
-      $("#add-animal").on("click", function(event) {
+      $("#add-animal").on("click", function (event) {
         event.preventDefault();
         // This line grabs the input from the textbox
         var animal = $("#animal-input").val().trim();
@@ -119,3 +122,9 @@
 </body>
 
 </html>
+
+<!-- // still need
+- to get the div emptied after each button click.
+-get them to animate when clicked on
+- get a fixed hieght 
+-place them horizontally -->
