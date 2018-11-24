@@ -11,18 +11,18 @@
 <body>
 
   <div class="container">
-    <h1>Giphy Search</h1>
+    <h1>Giphy Animal Search</h1>
 
     <!-- Rendered Buttons will get Dumped Here  -->
     <div id="buttons-view"></div>
 
     <form id="animal-form">
-      <label for="a-input">Add a Giphy!</label>
+      <label for="a-input">Add a Animal!</label>
       <input type="text" id="animal-input">
       <br>
 
       <!-- Button triggers new animal to be added -->
-      <input id="add-animal" type="submit" value="Add a Giphy!">
+      <input id="add-animal" type="submit" value="Submit">
     </form>
 
     <!-- Animals will Get Dumped Here -->
@@ -31,7 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       // Initial array of animals
-      var animals = ["cat", "dog", "bunny", "hamster", "lion", "tiger", "bear", "horse", "panda", "bird", "elephant", "dolphin", "fish", "turtle", "frog", "snake", "cow", "goat", "pig"];
+      var animals = ["cat", "dog", "bunny", "hamster", "lion", "bear", "horse", "panda", "bird", "elephant", "dolphin", "fish", "turtle", "frog", "snake", "cow", "goat", "pig"];
 
       // displayAnimalInfo function re-renders the HTML to display the appropriate content
       function displayAnimalInfo() {
@@ -44,35 +44,53 @@
           url: queryURL,
           method: "GET"
         }).then(function (response) {
-          console.log(response);
-
-
+          
           // Creating a div to hold the animal
           var animalDiv = $("<div class='animal'>");
           var results = response.data;
+
           // Creating a loop to execute the amount of items in the array
           for (var i = 0; i < results.length; i++) {
             // Storing the rating data
             var rating = results[i].rating;
 
             // Creating an element to have the rating displayed
-            var pOne = $("<p>").text("Rating: " + rating);
+            var ratings = $("<p>").text("Rating: " + rating);
+            
+            // Creates a new image for the animal    
+            var image = $("<img>");
+            
+            // Adds still and animated attributes for the image
+            image.attr("src", results[i].images.fixed_height_still.url);
+            image.attr("data-still", results[i].images.fixed_height_still.url);
+            image.attr("data-animate", results[i].images.fixed_height.url);
+            image.attr("data-state", "still");
+            image.addClass("gif");
 
-            // Retrieving the URL for the image
-            var imgURL = results[i].images.downsized_still.url;
-
-            // Creating an element to hold the image
-            var image = $("<img>").attr("src", imgURL);
+            // This removes the previous array of images
+            $("#animal-view").empty();
 
             // Appending the rating and image
-            animalDiv.append(pOne);
+            animalDiv.append(ratings);
             animalDiv.append(image);
 
-            // Putting the entire animal above the previous animals
             $("#animal-view").prepend(animalDiv);
           }
-        });
 
+          // This function changes the state of the image when the image is clicked
+          $(document).on("click", "img", function () {
+
+            var state = $(this).attr("data-state");
+
+            if (state === "still") {
+              $(this).attr("src", $(this).attr("data-animate"));
+              $(this).attr("data-state", "animate");
+            } else {
+              $(this).attr("src", $(this).attr("data-still"));
+              $(this).attr("data-state", "still");
+            }
+          })
+        });
       }
 
       // Function for displaying animal data
@@ -102,11 +120,15 @@
       // This function handles events where a animal button is clicked
       $("#add-animal").on("click", function (event) {
         event.preventDefault();
+        
         // This line grabs the input from the textbox
         var animal = $("#animal-input").val().trim();
 
         // Adding animal from the textbox to our array
         animals.push(animal);
+
+        // this currently won't work!
+        $("#animal-input").val("");
 
         // Calling renderButtons which handles the processing of our animal array
         renderButtons();
@@ -117,14 +139,14 @@
 
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
+
     </script>
   </div>
-</body>
 
+</body>
 </html>
 
-<!-- // still need
-- to get the div emptied after each button click.
--get them to animate when clicked on
-- get a fixed hieght 
--place them horizontally -->
+
+<!-- 
+-place them horizontally  -->
+

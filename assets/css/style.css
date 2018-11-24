@@ -1,5 +1,32 @@
 
-    button, div, form, input {
-      margin: 10px;
+  body {
+    background-color: rgba(229, 236, 241, 0.87);
+  }
+  
+  div, form, input {
+      margin: 10px;   
+    } 
+
+  .animal-btn, #add-animal {
+      margin: 5px; 
+      border-radius: 5px;
+      color:black;
+      background-color: lightblue
     }
+     
+    #animal-form {
+      float: right;
+    }
+
+    #animal-view {
+      width: 850px;
+      display: inline-block;
+      
+    } 
+
+  .animal {
+    width: 100px;
+    display: inline-block;
+  } 
+
   
