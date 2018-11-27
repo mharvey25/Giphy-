@@ -5,28 +5,23 @@
   
   div, form, input {
       margin: 10px;   
-    } 
+  } 
 
   .animal-btn, #add-animal {
       margin: 5px; 
       border-radius: 5px;
       color:black;
       background-color: lightblue
-    }
-     
-    #animal-form {
-      float: right;
-    }
-
-    #animal-view {
-      width: 850px;
-      display: inline-block;
-      
-    } 
+  }
+  
+  .gif {
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin: 10px;
+  }
 
   .animal {
-    width: 100px;
-    display: inline-block;
-  } 
-
-  
+    float: left;
+    width: 100%;
+  }
